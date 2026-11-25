@@ -1,0 +1,2948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LastMile – Public Service Monitoring & Accountability Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --navy: #0f294a;
+      --navy-dark: #091a30;
+      --teal: #0d9488;
+      --teal-dark: #0f766e;
+      --green: #10b981;
+      --green-dark: #059669;
+      --amber: #d97706;
+      --amber-bg: #fef3c7;
+      --red: #dc2626;
+      --red-bg: #fee2e2;
+      --blue: #2563eb;
+      --blue-bg: #dbeafe;
+      --purple: #7c3aed;
+      --purple-bg: #ede9fe;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --radius: 14px;
+      --shadow: 0 4px 20px -4px rgba(15, 41, 74, 0.08);
+      --shadow-lg: 0 12px 32px -8px rgba(15, 41, 74, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .brand-font {
+      font-family: 'Poppins', 'Inter', sans-serif;
+      color: var(--navy);
+      line-height: 1.25;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Demo Banner */
+    .demo-banner {
+      background: linear-gradient(90deg, var(--navy-dark), var(--navy), var(--teal-dark));
+      color: #f8fafc;
+      font-size: 0.82rem;
+      padding: 8px 16px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .demo-pill {
+      background: rgba(16, 185, 129, 0.22);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      color: #a7f3d0;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* Navigation */
+    header.navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(15, 41, 74, 0.04);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 72px;
+      padding: 8px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      background: none;
+      border: none;
+      text-align: left;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--navy), var(--teal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.28);
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-sub {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--teal-dark);
+      font-weight: 600;
+      margin-top: -2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 11px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      color: var(--navy);
+      background: #f1f5f9;
+    }
+
+    .nav-btn.active {
+      color: var(--teal-dark);
+      background: #f0fdfa;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    select.lang-select {
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--navy);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .icon-btn {
+      position: relative;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--navy);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: #f8fafc;
+      border-color: var(--teal);
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: var(--red);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-sm {
+      padding: 7px 13px;
+      font-size: 0.82rem;
+      border-radius: 8px;
+    }
+
+    .btn-lg {
+      padding: 13px 22px;
+      font-size: 1rem;
+      border-radius: 12px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--teal), var(--green-dark));
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.28);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(13, 148, 136, 0.35);
+    }
+
+    .btn-navy {
+      background: var(--navy);
+      color: #fff;
+    }
+
+    .btn-navy:hover {
+      background: var(--navy-dark);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--navy);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--teal);
+      color: var(--teal-dark);
+      background: #f0fdfa;
+    }
+
+    .btn-success {
+      background: var(--green-dark);
+      color: #fff;
+    }
+
+    .btn-success:hover {
+      background: #047857;
+    }
+
+    .btn-danger {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--navy);
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Sections & Cards */
+    main {
+      min-height: 75vh;
+      padding-bottom: 56px;
+    }
+
+    .page-view {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .page-view.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-block {
+      padding: 44px 0;
+    }
+
+    .section-header {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .section-kicker {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--teal-dark);
+      background: #ccfbf1;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      font-size: 0.98rem;
+      max-width: 680px;
+      margin-top: 6px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 50%, #ecfdf5 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 0 56px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .hero p {
+      font-size: 1.08rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+      max-width: 580px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .hero-trust {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 0.86rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .hero-trust span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Grids */
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+    }
+
+    .grid-sidebar {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* Service Cards */
+    .service-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .service-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+      border-color: #99f6e4;
+    }
+
+    .service-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .service-card h3 {
+      font-size: 1.12rem;
+      margin-bottom: 6px;
+    }
+
+    .service-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* Stat Cards */
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--navy), var(--teal), var(--green));
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin: 6px 0 4px;
+    }
+
+    .stat-meta {
+      font-size: 0.78rem;
+      color: var(--teal-dark);
+      font-weight: 600;
+    }
+
+    /* Progress Bars */
+    .bar-track {
+      width: 100%;
+      height: 11px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+
+    /* Steps */
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--navy), var(--teal));
+      color: #fff;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    /* Accountability Banner */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--navy) 0%, #134e4a 100%);
+      color: #fff;
+      border-radius: 18px;
+      padding: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .cta-banner h2, .cta-banner p {
+      color: #fff;
+    }
+
+    .cta-banner p {
+      opacity: 0.9;
+      max-width: 620px;
+      margin-top: 8px;
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      font-size: 0.94rem;
+      color: var(--text);
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+    }
+
+    textarea.form-control {
+      min-height: 105px;
+      resize: vertical;
+    }
+
+    .map-picker {
+      background: linear-gradient(135deg, #e0f2fe, #dcfce7);
+      border: 1.5px dashed var(--teal);
+      border-radius: 12px;
+      padding: 16px;
+      position: relative;
+      cursor: crosshair;
+    }
+
+    /* Status Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .b-submitted { background: var(--blue-bg); color: var(--blue); }
+    .b-review { background: var(--purple-bg); color: var(--purple); }
+    .b-progress { background: #e0f2fe; color: #0369a1; }
+    .b-reported { background: var(--amber-bg); color: #92400e; }
+    .b-awaiting { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+    .b-verified { background: #d1fae5; color: #065f46; }
+    .b-reopened { background: var(--red-bg); color: #991b1b; }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 26px;
+      margin-top: 14px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: #cbd5e1;
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .tl-dot {
+      position: absolute;
+      left: -24px;
+      top: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: 3px solid #ccfbf1;
+    }
+
+    .tl-item.done .tl-dot {
+      background: var(--green-dark);
+      border-color: #d1fae5;
+    }
+
+    .tl-item.reopen .tl-dot {
+      background: var(--red);
+      border-color: #fee2e2;
+    }
+
+    /* Gauge */
+    .gauge-ring {
+      width: 156px;
+      height: 156px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      position: relative;
+    }
+
+    .gauge-inner {
+      width: 122px;
+      height: 122px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 8px rgba(15, 41, 74, 0.08);
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Dropdown & Modal */
+    .notif-panel {
+      display: none;
+      position: fixed;
+      top: 98px;
+      right: 20px;
+      width: 360px;
+      max-width: calc(100vw - 32px);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow-lg);
+      z-index: 200;
+      overflow: hidden;
+    }
+
+    .notif-panel.open {
+      display: block;
+    }
+
+    .notif-header {
+      padding: 14px 16px;
+      background: var(--navy);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .notif-list {
+      max-height: 340px;
+      overflow-y: auto;
+    }
+
+    .notif-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    .notif-item.unread {
+      background: #f0fdfa;
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #fff;
+      border-radius: 16px;
+      max-width: 480px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: var(--navy-dark);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      z-index: 400;
+      display: none;
+      border-left: 4px solid var(--green);
+    }
+
+    .toast.show {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--navy-dark);
+      color: #cbd5e1;
+      padding: 44px 0 24px;
+      margin-top: 48px;
+    }
+
+    footer h4, footer .brand-name {
+      color: #fff;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.88rem;
+    }
+
+    .footer-links button {
+      background: none;
+      border: none;
+      color: #cbd5e1;
+      text-align: left;
+      font-size: 0.88rem;
+      padding: 0;
+    }
+
+    .footer-links button:hover {
+      color: #5eead4;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.82rem;
+    }
+
+    .evidence-thumb {
+      width: 100%;
+      max-height: 190px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    .alert-box {
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+    }
+
+    .alert-success {
+      background: #ecfdf5;
+      border: 1px solid #6ee7b7;
+      color: #065f46;
+    }
+
+    .alert-warn {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      color: #92400e;
+    }
+
+    .alert-info {
+      background: #f0f9ff;
+      border: 1px solid #7dd3fc;
+      color: #075985;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: repeat(2, 1fr); }
+      .hero-grid, .grid-sidebar, .footer-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 820px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px 20px 18px;
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-lg);
+      }
+      .nav-links.open {
+        display: flex;
+      }
+      .mobile-menu-btn {
+        display: inline-flex;
+      }
+      .nav-actions .btn-primary span.hide-xs {
+        display: none;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      .section-title { font-size: 1.45rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Demo Data Banner -->
+  <div class="demo-banner" role="status">
+    <span class="demo-pill">Demo Mode</span>
+    <span id="demoBannerText">Illustrative sample service data stored locally in your browser (Local Storage) for demonstration. Not connected to live government systems.</span>
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <button class="brand" onclick="navigateTo('home')" aria-label="LastMile Home">
+        <div class="brand-mark">
+          <i data-lucide="shield-check" style="width:22px;height:22px;"></i>
+        </div>
+        <div>
+          <span class="brand-name brand-font">LastMile</span>
+          <span class="brand-sub" id="navTagline">Promise vs Reality</span>
+        </div>
+      </button>
+
+      <nav class="nav-links" id="navLinks" aria-label="Main Navigation">
+        <button class="nav-btn active" data-page="home" onclick="navigateTo('home')" id="nav-home">Home</button>
+        <button class="nav-btn" data-page="services" onclick="navigateTo('services')" id="nav-services">Explore Services</button>
+        <button class="nav-btn" data-page="report" onclick="navigateTo('report')" id="nav-report">Report an Issue</button>
+        <button class="nav-btn" data-page="track" onclick="navigateTo('track')" id="nav-track">Track Complaint</button>
+        <button class="nav-btn" data-page="reliability" onclick="navigateTo('reliability')" id="nav-reliability">Reliability Dashboard</button>
+        <button class="nav-btn" data-page="citizen" onclick="navigateTo('citizen')" id="nav-citizen">Citizen Hub</button>
+        <button class="nav-btn" data-page="admin" onclick="navigateTo('admin')" id="nav-admin">Authority Admin</button>
+        <button class="nav-btn" data-page="about" onclick="navigateTo('about')" id="nav-about">About Us</button>
+      </nav>
+
+      <div class="nav-actions">
+        <select class="lang-select" id="langSelect" aria-label="Select Language" onchange="changeLanguage(this.value)">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी (Hindi)</option>
+          <option value="te">తెలుగు (Telugu)</option>
+        </select>
+
+        <button class="icon-btn" onclick="toggleNotifications()" aria-label="Notifications" title="Notifications">
+          <i data-lucide="bell" style="width:18px;height:18px;"></i>
+          <span class="notif-badge" id="notifCount">0</span>
+        </button>
+
+        <button class="btn btn-outline btn-sm" onclick="openAuthModal()" id="authNavBtn">
+          <i data-lucide="user-check" style="width:15px;height:15px;"></i>
+          <span id="authRoleLabel">Citizen</span>
+        </button>
+
+        <button class="btn btn-primary btn-sm" onclick="navigateTo('report')">
+          <i data-lucide="plus-circle" style="width:16px;height:16px;"></i>
+          <span class="hide-xs" id="navReportCta">Report a Problem</span>
+        </button>
+
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
+          <i data-lucide="menu" style="width:20px;height:20px;"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notifications Dropdown Panel -->
+  <div class="notif-panel" id="notifPanel" role="dialog" aria-label="Notifications">
+    <div class="notif-header">
+      <span>Alerts & Notifications</span>
+      <button class="btn btn-sm" style="background:rgba(255,255,255,0.16);color:#fff;padding:4px 9px;" onclick="markAllNotificationsRead()">Mark all read</button>
+    </div>
+    <div class="notif-list" id="notifList"></div>
+  </div>
+
+  <!-- Role & Account Modal -->
+  <div class="modal-backdrop" id="authModal" onclick="if(event.target===this)closeAuthModal()">
+    <div class="modal-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <h3 style="font-size:1.2rem;">Switch Role / Demo Login</h3>
+        <button class="icon-btn" onclick="closeAuthModal()" aria-label="Close"><i data-lucide="x" style="width:18px;height:18px;"></i></button>
+      </div>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:16px;">
+        Select how you want to explore LastMile in this browser session. Role permissions are enforced so administrators cannot mark a ticket as citizen-verified without resident confirmation.
+      </p>
+      <div class="form-group">
+        <label>Active Role</label>
+        <select class="form-control" id="modalRoleSelect">
+          <option value="citizen">Citizen Account (Report, Track & Verify Resolutions)</option>
+          <option value="admin">Government Authority / Administrator (Investigate, Assign & Update)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Display Name</label>
+        <input type="text" class="form-control" id="modalUserName" value="Ananya Rao" />
+      </div>
+      <div class="form-group">
+        <label>Selected Locality / Jurisdiction</label>
+        <input type="text" class="form-control" id="modalUserLoc" value="Gachibowli, Hyderabad, Telangana" />
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+        <button class="btn btn-outline" onclick="closeAuthModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveRoleSession()">Save & Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toastBox" role="status"></div>
+
+  <main>
+    <!-- ==================== 1. HOMEPAGE ==================== -->
+    <section id="page-home" class="page-view active">
+      <div class="hero">
+        <div class="container hero-grid">
+          <div>
+            <span class="section-kicker" id="heroBadge">Civic Accountability & Service Reliability</span>
+            <h1 id="heroTitle">Are Public Services Working as Promised?</h1>
+            <p id="heroSubtitle">Your community deserves reliable public services. Report problems, track complaints, and help make local authorities accountable.</p>
+            <div class="hero-buttons">
+              <button class="btn btn-primary btn-lg" onclick="navigateTo('report')">
+                <i data-lucide="alert-circle" style="width:19px;height:19px;"></i>
+                <span id="heroBtnReport">Report a Problem</span>
+              </button>
+              <button class="btn btn-navy btn-lg" onclick="navigateTo('reliability')">
+                <i data-lucide="bar-chart-3" style="width:19px;height:19px;"></i>
+                <span id="heroBtnExplore">Explore Service Reliability</span>
+              </button>
+            </div>
+            <div class="hero-trust">
+              <span><i data-lucide="check-circle-2" style="width:16px;height:16px;color:var(--green-dark);"></i> Independent Citizen Verification</span>
+              <span><i data-lucide="map-pin" style="width:16px;height:16px;color:var(--teal-dark);"></i> Locality Promise vs Reality Scores</span>
+              <span><i data-lucide="lock" style="width:16px;height:16px;color:var(--navy);"></i> Privacy-Safe Public Analytics</span>
+            </div>
+          </div>
+
+          <!-- Civic Illustration SVG -->
+          <div class="card" style="padding:18px;background:#ffffff;">
+            <svg viewBox="0 0 500 340" width="100%" height="auto" role="img" aria-label="Illustration of citizens, water supply, electricity, streetlights, and sanitation">
+              <defs>
+                <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#e0f2fe" />
+                  <stop offset="100%" stop-color="#f0fdfa" />
+                </linearGradient>
+                <linearGradient id="waterGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#0ea5e9" />
+                  <stop offset="100%" stop-color="#0d9488" />
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0" width="500" height="340" rx="14" fill="url(#skyGrad)" />
+              <!-- Ground -->
+              <rect x="0" y="268" width="500" height="72" rx="0" fill="#ecfdf5" />
+              <line x1="0" y1="268" x2="500" y2="268" stroke="#a7f3d0" stroke-width="2" />
+
+              <!-- Community Buildings -->
+              <rect x="44" y="135" width="96" height="133" rx="8" fill="#0f294a" />
+              <rect x="58" y="152" width="22" height="22" rx="4" fill="#5eead4" />
+              <rect x="92" y="152" width="22" height="22" rx="4" fill="#5eead4" />
+              <rect x="58" y="188" width="22" height="22" rx="4" fill="#99f6e4" />
+              <rect x="92" y="188" width="22" height="22" rx="4" fill="#99f6e4" />
+              <rect x="78" y="226" width="28" height="42" rx="4" fill="#10b981" />
+
+              <rect x="154" y="168" width="84" height="100" rx="8" fill="#1e3a5f" />
+              <rect x="168" y="184" width="20" height="20" rx="4" fill="#bae6fd" />
+              <rect x="202" y="184" width="20" height="20" rx="4" fill="#bae6fd" />
+              <rect x="184" y="224" width="24" height="44" rx="4" fill="#0d9488" />
+
+              <!-- Water Tower & Droplet -->
+              <rect x="275" y="96" width="66" height="46" rx="8" fill="url(#waterGrad)" />
+              <line x1="288" y1="142" x2="280" y2="268" stroke="#0f294a" stroke-width="5" />
+              <line x1="328" y1="142" x2="336" y2="268" stroke="#0f294a" stroke-width="5" />
+              <path d="M308 106 C308 106, 297 120, 297 127 A11 11 0 0 0 319 127 C319 120, 308 106, 308 106 Z" fill="#ffffff" />
+
+              <!-- Streetlight -->
+              <line x1="395" y1="120" x2="395" y2="268" stroke="#0f294a" stroke-width="5" />
+              <path d="M395 120 Q422 115 434 132" fill="none" stroke="#0f294a" stroke-width="5" stroke-linecap="round" />
+              <polygon points="424,136 444,136 456,215 412,215" fill="#fef08a" opacity="0.55" />
+              <circle cx="434" cy="134" r="7" fill="#f59e0b" />
+
+              <!-- Citizens & Verification Card -->
+              <circle cx="115" cy="236" r="9" fill="#0d9488" />
+              <path d="M103 268 Q115 248 127 268" fill="#0d9488" />
+              <circle cx="255" cy="240" r="9" fill="#059669" />
+              <path d="M243 268 Q255 250 267 268" fill="#059669" />
+
+              <!-- Floating Status Card -->
+              <rect x="268" y="28" width="204" height="54" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+              <circle cx="292" cy="55" r="12" fill="#d1fae5" />
+              <path d="M287 55 L291 59 L298 51" stroke="#059669" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+              <text x="312" y="51" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#0f294a">Verified Resolved</text>
+              <text x="312" y="67" font-family="Inter, sans-serif" font-size="10" fill="#475569">Promise vs Reality: 68/100</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Service Overview -->
+      <div class="section-block">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <span class="section-kicker">Essential Public Utilities</span>
+              <h2 class="section-title">Quick Service Overview</h2>
+              <p class="section-subtitle">Select a core public service to inspect reliability gaps, recurring problems, and active community reports.</p>
+            </div>
+            <button class="btn btn-outline" onclick="navigateTo('services')">View All Services</button>
+          </div>
+          <div class="grid-4" id="homeServiceCards"></div>
+        </div>
+      </div>
+
+      <!-- Live Community Statistics -->
+      <div class="section-block" style="padding-top:8px;">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <span class="section-kicker">Demo Sample Metrics</span>
+              <h2 class="section-title">Live Community Statistics</h2>
+              <p class="section-subtitle">Illustrative demonstration figures updated dynamically as you submit, resolve, or verify complaints in this browser.</p>
+            </div>
+          </div>
+          <div class="grid-4" id="homeStatsGrid"></div>
+        </div>
+      </div>
+
+      <!-- Promise vs Reality Section -->
+      <div class="section-block">
+        <div class="container">
+          <div class="card">
+            <div class="section-header" style="margin-bottom:18px;">
+              <div>
+                <span class="section-kicker">Service Delivery Gap</span>
+                <h2 class="section-title">Promise vs Reality</h2>
+                <p class="section-subtitle">Comparing officially promised service schedules against actual community delivery (illustrative demo benchmarks).</p>
+              </div>
+              <button class="btn btn-navy btn-sm" onclick="navigateTo('reliability')">Full Reliability Dashboard</button>
+            </div>
+            <div class="grid-2" id="homePromiseBars"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- How LastMile Works -->
+      <div class="section-block" style="padding-top:8px;">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <span class="section-kicker">Closed-Loop Accountability</span>
+              <h2 class="section-title">How LastMile Works</h2>
+              <p class="section-subtitle">A ticket is never closed just because an authority says so—citizens verify real-world fixes.</p>
+            </div>
+          </div>
+          <div class="grid-4">
+            <div class="card">
+              <div class="step-num">1</div>
+              <h3>Report</h3>
+              <p style="color:var(--muted);font-size:0.9rem;margin-top:6px;">Citizens report public service failures with locality details, timestamps, and supporting photo evidence.</p>
+            </div>
+            <div class="card">
+              <div class="step-num">2</div>
+              <h3>Track</h3>
+              <p style="color:var(--muted);font-size:0.9rem;margin-top:6px;">Follow every complaint stage transparently using a unique Reference ID and live status timeline.</p>
+            </div>
+            <div class="card">
+              <div class="step-num">3</div>
+              <h3>Verify</h3>
+              <p style="color:var(--muted);font-size:0.9rem;margin-top:6px;">Confirm whether the problem is genuinely fixed or reopen it with evidence if the issue persists.</p>
+            </div>
+            <div class="card">
+              <div class="step-num">4</div>
+              <h3>Improve</h3>
+              <p style="color:var(--muted);font-size:0.9rem;margin-top:6px;">Authorities analyze recurring failures and Promise vs Reality scores to fix root causes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Community Accountability CTA -->
+      <div class="section-block" style="padding-top:8px;">
+        <div class="container">
+          <div class="cta-banner">
+            <div>
+              <h2 style="font-size:1.7rem;">Make Your Community More Accountable.</h2>
+              <p>Every verified report and honest resolution check strengthens local service reliability for your neighborhood and helps authorities prioritize neglected areas.</p>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <button class="btn btn-primary btn-lg" onclick="navigateTo('report')">Report an Issue Now</button>
+              <button class="btn btn-outline btn-lg" style="background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.35);" onclick="navigateTo('about')">Learn More</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 2. EXPLORE SERVICES ==================== -->
+    <section id="page-services" class="page-view">
+      <div class="container section-block">
+        <div class="section-header">
+          <div>
+            <span class="section-kicker">Public Service Directory</span>
+            <h1 class="section-title">Explore Services</h1>
+            <p class="section-subtitle">Inspect service promises, demo reliability scores, common failure modes, and active complaints across categories.</p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;" id="serviceFilterBar"></div>
+        </div>
+        <div class="grid-2" id="exploreServicesList"></div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. REPORT AN ISSUE ==================== -->
+    <section id="page-report" class="page-view">
+      <div class="container section-block">
+        <div class="section-header">
+          <div>
+            <span class="section-kicker">Citizen Complaint Submission</span>
+            <h1 class="section-title">Report an Issue</h1>
+            <p class="section-subtitle">Submit a clear, mobile-friendly report. You will receive a unique tracking ID immediately.</p>
+          </div>
+        </div>
+
+        <div id="reportSuccessBox"></div>
+
+        <div class="grid-sidebar">
+          <form class="card" id="complaintForm" onsubmit="submitComplaint(event)" novalidate>
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="serviceCategory">Select Service Category *</label>
+                <select id="serviceCategory" class="form-control" required>
+                  <option value="">-- Choose a service --</option>
+                  <option value="Drinking Water">Drinking Water</option>
+                  <option value="Electricity">Electricity</option>
+                  <option value="Streetlights">Streetlights</option>
+                  <option value="Sanitation">Sanitation</option>
+                  <option value="Other Public Services">Other Public Services</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="occurredAt">Date and Time of Occurrence *</label>
+                <input type="datetime-local" id="occurredAt" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="problemTitle">Problem Title *</label>
+              <input type="text" id="problemTitle" class="form-control" placeholder="e.g., No water supply for 4 days in Ward 12" required />
+            </div>
+
+            <div class="form-group">
+              <label for="problemDesc">Describe the Problem *</label>
+              <textarea id="problemDesc" class="form-control" placeholder="Share helpful details: duration, affected households, safety risks, or past occurrences..." required></textarea>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="villageCity">Village / Town / City *</label>
+                <input type="text" id="villageCity" class="form-control" placeholder="e.g., Hyderabad" value="Hyderabad" required />
+              </div>
+              <div class="form-group">
+                <label for="areaLocality">Area / Locality *</label>
+                <select id="areaLocality" class="form-control" required onchange="syncMapPinFromLocality()">
+                  <option value="Gachibowli">Gachibowli</option>
+                  <option value="Kukatpally">Kukatpally</option>
+                  <option value="Secunderabad">Secunderabad</option>
+                  <option value="LB Nagar">LB Nagar</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Exact Location or Map Pin (Click inside map box to place pin)</label>
+              <div class="map-picker" id="mapPickerBox" onclick="pickMapPin(event)">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <div>
+                    <strong style="color:var(--navy);font-size:0.9rem;"><i data-lucide="map-pin" style="width:15px;height:15px;vertical-align:-2px;color:var(--teal-dark);"></i> Interactive Locality Pin Selector (Demo)</strong>
+                    <div id="pinCoordsText" style="font-size:0.82rem;color:var(--muted);margin-top:3px;">Pin: 17.4401° N, 78.3489° E (Gachibowli)</div>
+                  </div>
+                  <button type="button" class="btn btn-outline btn-sm" onclick="event.stopPropagation(); useCurrentApproxLocation();">Use Locality Center</button>
+                </div>
+                <input type="text" id="exactLocation" class="form-control" style="margin-top:10px;" placeholder="Landmark or street note (e.g., Near Community Park Gate 2)" />
+                <input type="hidden" id="latInput" value="17.4401" />
+                <input type="hidden" id="lngInput" value="78.3489" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="evidenceInput">Upload Supporting Evidence (Images)</label>
+              <input type="file" id="evidenceInput" class="form-control" accept="image/*" onchange="previewEvidenceFile(event)" />
+              <div id="evidencePreviewWrap"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">
+              <i data-lucide="send" style="width:18px;height:18px;"></i>
+              <span>Submit Complaint</span>
+            </button>
+          </form>
+
+          <div class="card">
+            <h3 style="margin-bottom:10px;">Reporting Guidelines</h3>
+            <p style="font-size:0.88rem;color:var(--muted);margin-bottom:14px;">
+              Clear reports help authorities assign the right department faster and give neighbors accurate reliability data.
+            </p>
+            <ul style="padding-left:18px;font-size:0.88rem;color:var(--text);display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
+              <li>State when the service disruption started and how long it has lasted.</li>
+              <li>Include nearby landmarks so field teams can locate the spot quickly.</li>
+              <li>Attach a clear photo when safe to do so (e.g., dry tap, broken lamp, overflow).</li>
+              <li>Save your generated <strong>Reference ID</strong> to track status and verify resolution.</li>
+            </ul>
+            <div class="alert-box alert-info" style="margin-bottom:0;">
+              <strong>Privacy Note:</strong> Personal contact details are not exposed on public reliability dashboards.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. TRACK COMPLAINT & VERIFICATION ==================== -->
+    <section id="page-track" class="page-view">
+      <div class="container section-block">
+        <div class="section-header">
+          <div>
+            <span class="section-kicker">Live Status & Resolution Check</span>
+            <h1 class="section-title">Track Complaint</h1>
+            <p class="section-subtitle">Search by Reference ID (such as <code>LM-2026-1042</code>) or pick a demo complaint below to inspect progress and verify resolutions.</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:22px;">
+          <form onsubmit="handleTrackSearch(event)" style="display:flex;gap:10px;flex-wrap:wrap;">
+            <input type="text" id="trackSearchInput" class="form-control" style="flex:1;min-width:220px;" placeholder="Enter Complaint Reference ID (e.g., LM-2026-1042)" />
+            <button type="submit" class="btn btn-navy">
+              <i data-lucide="search" style="width:17px;height:17px;"></i>
+              <span>Track Complaint</span>
+            </button>
+            <button type="button" class="btn btn-outline" onclick="clearTrackSearch()">Show All Demo Tickets</button>
+          </form>
+        </div>
+
+        <div id="trackResultDetail" style="margin-bottom:24px;"></div>
+
+        <h3 style="margin-bottom:12px;">Recent Complaints (Click to Inspect or Verify)</h3>
+        <div id="trackComplaintsList" class="grid-2"></div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. RELIABILITY DASHBOARD ==================== -->
+    <section id="page-reliability" class="page-view">
+      <div class="container section-block">
+        <div class="section-header">
+          <div>
+            <span class="section-kicker">Promise vs Reality Analytics</span>
+            <h1 class="section-title">Reliability Dashboard</h1>
+            <p class="section-subtitle">Transparent comparison between promised service delivery and actual community experience. All figures below are illustrative demo data.</p>
+          </div>
+        </div>
+
+        <div class="alert-box alert-warn">
+          <strong>Transparency & Methodology Note:</strong> Demo values below are illustrative sample data for demonstration purposes only and do not represent verified real-world government statistics.
+          <br />
+          <span style="font-size:0.84rem;"><strong>Score Calculation Formula:</strong> <code>Reliability Score (0–100) = 0.55 × (Actual Delivery / Promised Benchmark × 100) + 0.30 × Citizen Verification Rate + 0.15 × (100 − Reopen Penalty)</code>, clamped between 0 and 100.</span>
+        </div>
+
+        <div class="grid-3" style="margin-bottom:24px;">
+          <!-- Overall Score Gauge -->
+          <div class="card" style="text-align:center;">
+            <h3 style="margin-bottom:14px;">Overall Reliability Score</h3>
+            <div class="gauge-ring" id="overallGaugeRing">
+              <div class="gauge-inner">
+                <span id="overallScoreNum" style="font-size:2.1rem;font-weight:800;color:var(--navy);">68</span>
+                <span style="font-size:0.78rem;font-weight:700;color:var(--muted);">/ 100</span>
+              </div>
+            </div>
+            <p id="overallScoreLabel" style="font-size:0.88rem;color:var(--teal-dark);font-weight:700;">Moderate Reliability — Needs Attention</p>
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:6px;">Aggregated across Water, Electricity, Streetlights & Sanitation (Demo).</p>
+          </div>
+
+          <!-- Service-Wise Reliability Bars -->
+          <div class="card" style="grid-column:span 2;">
+            <h3 style="margin-bottom:14px;">Service-Wise Reliability Scores</h3>
+            <div id="serviceReliabilityBars"></div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="grid-2" style="margin-bottom:24px;">
+          <div class="card">
+            <h3 style="margin-bottom:12px;">Promised vs Actual Service Delivery (%)</h3>
+            <canvas id="promiseRealityChart" height="220"></canvas>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:12px;">Recurring Failures by Category (Demo)</h3>
+            <canvas id="recurringFailuresChart" height="220"></canvas>
+          </div>
+        </div>
+
+        <!-- Promise vs Reality Comparison Table -->
+        <div class="card" style="margin-bottom:24px;">
+          <h3 style="margin-bottom:6px;">Promise vs Reality Comparison Table</h3>
+          <p style="font-size:0.84rem;color:var(--muted);margin-bottom:14px;">Illustrative demo values comparing promised schedules with observed delivery.</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Promised Delivery</th>
+                  <th>Actual Delivery</th>
+                  <th>Reliability Score</th>
+                  <th>Recurring Failure Hotspot</th>
+                </tr>
+              </thead>
+              <tbody id="promiseTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Location-Based Reliability Explorer -->
+        <div class="card">
+          <h3 style="margin-bottom:6px;">Location-Based Reliability Explorer</h3>
+          <p style="font-size:0.84rem;color:var(--muted);margin-bottom:16px;">Filter by State, District, Town/Village, and Locality to inspect neighborhood service reliability and recurring failure notes.</p>
+          <div class="grid-4" style="margin-bottom:18px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="locState">State</label>
+              <select id="locState" class="form-control" onchange="updateLocationExplorer()">
+                <option value="Telangana">Telangana</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="locDistrict">District</label>
+              <select id="locDistrict" class="form-control" onchange="updateLocationExplorer()">
+                <option value="Hyderabad">Hyderabad</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="locCity">Town / Village / City</label>
+              <select id="locCity" class="form-control" onchange="updateLocationExplorer()">
+                <option value="Greater Hyderabad">Greater Hyderabad</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="locArea">Locality</label>
+              <select id="locArea" class="form-control" onchange="updateLocationExplorer()">
+                <option value="All">All Localities</option>
+                <option value="Gachibowli">Gachibowli</option>
+                <option value="Kukatpally">Kukatpally</option>
+                <option value="Secunderabad">Secunderabad</option>
+                <option value="LB Nagar">LB Nagar</option>
+              </select>
+            </div>
+          </div>
+          <div id="locationCardsGrid" class="grid-2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 6. CITIZEN DASHBOARD ==================== -->
+    <section id="page-citizen" class="page-view">
+      <div class="container section-block">
+        <div class="section-header">
+          <div>
+            <span class="section-kicker">Personal Citizen Workspace</span>
+            <h1 class="section-title" id="citizenWelcomeTitle">Welcome, Ananya Rao</h1>
+            <p class="section-subtitle" id="citizenLocSubtitle">Selected Locality: Gachibowli, Hyderabad, Telangana</p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <select id="citizenLocalitySelect" class="form-control" style="width:auto;" onchange="updateCitizenLocality(this.value)">
+              <option value="Gachibowli">Gachibowli</option>
+              <option value="Kukatpally">Kukatpally</option>
+              <option value="Secunderabad">Secunderabad</option>
+              <option value="LB Nagar">LB Nagar</option>
+            </select>
+            <button class="btn btn-primary" onclick="navigateTo('report')">+ New Complaint</button>
+          </div>
+        </div>
+
+        <div class="grid-4" id="citizenKpiGrid" style="margin-bottom:24px;"></div>
+
+        <div class="grid-sidebar">
+          <div class="card">
+            <h3 style="margin-bottom:14px;">Your Complaint History</h3>
+            <div id="citizenComplaintsList"></div>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-bottom:12px;">Recent Service Alerts</h3>
+            <div id="citizenAlertsList" style="display:flex;flex-direction:column;gap:10px;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 7. AUTHORITY / ADMIN DASHBOARD ==================== -->
+    <section id="page-admin" class="page-view">
+      <div class="container section-block">
+        <div class="section-header">
+          <div>
+            <span class="section-kicker">Administrator & Department Console</span>
+            <h1 class="section-title">Authority / Admin Dashboard</h1>
+            <p class="section-subtitle">Investigate complaints, assign departments, log resolution evidence, and review independent citizen verification outcomes.</p>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="resetDemoData()">Reset Demo Dataset</button>
+        </div>
+
+        <div id="adminRoleNotice" class="alert-box alert-warn"></div>
+
+        <div class="grid-4" id="adminKpiGrid" style="margin-bottom:24px;"></div>
+
+        <div class="grid-2" style="margin-bottom:24px;">
+          <div class="card">
+            <h3 style="margin-bottom:12px;">Complaint Status Distribution</h3>
+            <canvas id="adminStatusChart" height="210"></canvas>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:12px;">Recurring Failure Hotspots (Action Queue)</h3>
+            <div id="adminHotspotsList" style="display:flex;flex-direction:column;gap:10px;"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
+            <h3>Submitted Complaints Management</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <select id="adminFilterCategory" class="form-control" style="width:auto;" onchange="renderAdminDashboard()">
+                <option value="All">All Categories</option>
+                <option value="Drinking Water">Drinking Water</option>
+                <option value="Electricity">Electricity</option>
+                <option value="Streetlights">Streetlights</option>
+                <option value="Sanitation">Sanitation</option>
+                <option value="Other Public Services">Other Public Services</option>
+              </select>
+              <select id="adminFilterStatus" class="form-control" style="width:auto;" onchange="renderAdminDashboard()">
+                <option value="All">All Statuses</option>
+                <option value="Submitted">Submitted</option>
+                <option value="Under Review">Under Review</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolution Reported">Resolution Reported</option>
+                <option value="Awaiting Citizen Verification">Awaiting Citizen Verification</option>
+                <option value="Verified Resolved">Verified Resolved</option>
+                <option value="Reopened">Reopened</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID & Issue</th>
+                  <th>Locality & Priority</th>
+                  <th>Department & Status</th>
+                  <th>Authority Notes & Evidence</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminComplaintsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 8. ABOUT LASTMILE ==================== -->
+    <section id="page-about" class="page-view">
+      <div class="container section-block">
+        <span class="section-kicker">Our Mission & Purpose</span>
+        <h1 class="section-title" style="font-size:2.1rem;">Bridging the Gap Between Promised Services and Reality.</h1>
+        <p class="section-subtitle" style="margin-bottom:28px;">
+          LastMile is designed to give everyday citizens clear visibility into whether essential public utilities—water, electricity, streetlights, and sanitation—actually reach their homes as promised.
+        </p>
+
+        <div class="grid-3" style="margin-bottom:24px;">
+          <div class="card">
+            <h3>The Reliability Gap</h3>
+            <p style="color:var(--muted);font-size:0.92rem;margin-top:8px;">
+              Communities frequently face water cuts, voltage drops, dark streets, and irregular waste pickup. Even when schedules are promised on paper, actual last-mile delivery often falls short.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Why Traditional Portals Fall Short</h3>
+            <p style="color:var(--muted);font-size:0.92rem;margin-top:8px;">
+              Legacy complaint boxes often close tickets internally without checking whether the citizen still has the problem, hiding recurring neighborhood failures behind averages.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Independent Verification</h3>
+            <p style="color:var(--muted);font-size:0.92rem;margin-top:8px;">
+              LastMile separates <em>Resolution Reported</em> by authorities from <em>Verified Resolved</em> by citizens—ensuring real accountability and actionable service analytics.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>How Citizens Benefit</h3>
+            <ul style="padding-left:18px;margin-top:10px;display:flex;flex-direction:column;gap:8px;font-size:0.92rem;color:var(--muted);">
+              <li>Simple reporting with photo evidence and unique tracking IDs.</li>
+              <li>Right to confirm or reject resolution claims and reopen unresolved issues.</li>
+              <li>Clear locality reliability comparisons before and after civic action.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>How Authorities Benefit</h3>
+            <ul style="padding-left:18px;margin-top:10px;display:flex;flex-direction:column;gap:8px;font-size:0.92rem;color:var(--muted);">
+              <li>Spot recurring failure hotspots instead of treating isolated tickets in isolation.</li>
+              <li>Prioritize high-impact and reopened complaints with structured department routing.</li>
+              <li>Build public trust through transparent performance tracking.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:24px;text-align:center;background:#f0fdfa;border-color:#99f6e4;">
+          <p style="font-size:1.1rem;font-weight:700;color:var(--navy);">
+            "LastMile – Because Every Citizen Deserves the Services They Were Promised."
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <div class="brand-mark" style="width:36px;height:36px;">
+              <i data-lucide="shield-check" style="width:18px;height:18px;"></i>
+            </div>
+            <span class="brand-name brand-font">LastMile</span>
+          </div>
+          <p style="font-size:0.88rem;color:#cbd5e1;max-width:340px;">
+            Bridging the Gap Between Promised Services and Reality. Built for transparent citizen reporting, independent verification, and service reliability analytics.
+          </p>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="footer-links" style="margin-top:10px;">
+            <li><button onclick="navigateTo('home')">Home</button></li>
+            <li><button onclick="navigateTo('services')">Explore Services</button></li>
+            <li><button onclick="navigateTo('report')">Report an Issue</button></li>
+            <li><button onclick="navigateTo('track')">Track Complaint</button></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Dashboards</h4>
+          <ul class="footer-links" style="margin-top:10px;">
+            <li><button onclick="navigateTo('reliability')">Reliability Dashboard</button></li>
+            <li><button onclick="navigateTo('citizen')">Citizen Dashboard</button></li>
+            <li><button onclick="navigateTo('admin')">Authority / Admin</button></li>
+            <li><button onclick="navigateTo('about')">About LastMile</button></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Transparency</h4>
+          <p style="font-size:0.84rem;color:#94a3b8;margin-top:10px;">
+            Demonstration mode uses local browser storage and sample data. No live government database connection is simulated.
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>LastMile – Because Every Citizen Deserves the Services They Were Promised.</span>
+        <span>Demo Mode • Local Storage Enabled</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'lastmile_demo_state_v1';
+
+    const SERVICE_META = {
+      'Drinking Water': {
+        icon: 'droplets',
+        color: '#0284c7',
+        bg: '#e0f2fe',
+        shortDesc: 'Water supply interruptions, leakage, and irregular supply.',
+        promisedText: '7 days / week',
+        actualText: '4 days / week',
+        promisedPct: 100,
+        actualPct: 57,
+        hotspot: 'Kukatpally Phase 2 & LB Nagar North'
+      },
+      'Electricity': {
+        icon: 'zap',
+        color: '#d97706',
+        bg: '#fef3c7',
+        shortDesc: 'Power interruptions and unstable electricity supply.',
+        promisedText: '24 hours / day',
+        actualText: '20 hours / day',
+        promisedPct: 100,
+        actualPct: 83,
+        hotspot: 'Secunderabad West Feeder'
+      },
+      'Streetlights': {
+        icon: 'lightbulb',
+        color: '#0d9488',
+        bg: '#ccfbf1',
+        shortDesc: 'Non-functional or damaged streetlights.',
+        promisedText: '12 hours / night',
+        actualText: '8 hours / night',
+        promisedPct: 100,
+        actualPct: 67,
+        hotspot: 'Gachibowli Service Lane & Park Road'
+      },
+      'Sanitation': {
+        icon: 'trash-2',
+        color: '#059669',
+        bg: '#d1fae5',
+        shortDesc: 'Garbage collection, drainage, and waste management problems.',
+        promisedText: 'Daily collection',
+        actualText: '4 days / week',
+        promisedPct: 100,
+        actualPct: 57,
+        hotspot: 'LB Nagar Ward 9 & Kukatpally Market'
+      },
+      'Other Public Services': {
+        icon: 'building-2',
+        color: '#4f46e5',
+        bg: '#e0e7ff',
+        shortDesc: 'Public bus shelters, footpaths, and civic amenities.',
+        promisedText: '95% uptime',
+        actualText: '74% uptime',
+        promisedPct: 95,
+        actualPct: 74,
+        hotspot: 'Main Bus Junction'
+      }
+    };
+
+    const LOCALITY_DATA = [
+      { locality: 'Gachibowli', state: 'Telangana', district: 'Hyderabad', city: 'Greater Hyderabad', score: 74, water: 68, power: 86, lights: 64, sanitation: 78, recurring: 'Streetlight outages along outer service road; occasional evening low pressure.' },
+      { locality: 'Kukatpally', state: 'Telangana', district: 'Hyderabad', city: 'Greater Hyderabad', score: 61, water: 52, power: 78, lights: 62, sanitation: 54, recurring: 'Repeated water supply delays (4 of 7 days) and morning waste pickup backlog.' },
+      { locality: 'Secunderabad', state: 'Telangana', district: 'Hyderabad', city: 'Greater Hyderabad', score: 71, water: 66, power: 72, lights: 75, sanitation: 72, recurring: 'Transformer trip events during peak afternoon heat.' },
+      { locality: 'LB Nagar', state: 'Telangana', district: 'Hyderabad', city: 'Greater Hyderabad', score: 63, water: 55, power: 80, lights: 65, sanitation: 52, recurring: 'Drainage silt buildup before rains and irregular water distribution.' }
+    ];
+
+    const TRANSLATIONS = {
+      en: {
+        navTagline: 'Promise vs Reality',
+        home: 'Home',
+        services: 'Explore Services',
+        report: 'Report an Issue',
+        track: 'Track Complaint',
+        reliability: 'Reliability Dashboard',
+        citizen: 'Citizen Hub',
+        admin: 'Authority Admin',
+        about: 'About Us',
+        navReportCta: 'Report a Problem',
+        heroTitle: 'Are Public Services Working as Promised?',
+        heroSubtitle: 'Your community deserves reliable public services. Report problems, track complaints, and help make local authorities accountable.',
+        heroBtnReport: 'Report a Problem',
+        heroBtnExplore: 'Explore Service Reliability'
+      },
+      hi: {
+        navTagline: 'वादा बनाम हकीकत',
+        home: 'होम',
+        services: 'सेवाएं देखें',
+        report: 'समस्या दर्ज करें',
+        track: 'शिकायत ट्रैक करें',
+        reliability: 'विश्वसनीयता डैशबोर्ड',
+        citizen: 'नागरिक पोर्टल',
+        admin: 'प्रशासन डैशबोर्ड',
+        about: 'हमारे बारे में',
+        navReportCta: 'समस्या दर्ज करें',
+        heroTitle: 'क्या सार्वजनिक सेवाएं वादे के अनुसार काम कर रही हैं?',
+        heroSubtitle: 'आपका समुदाय भरोसेमंद सेवाओं का हकदार है। समस्याएं दर्ज करें, शिकायतों को ट्रैक करें और स्थानीय प्रशासन को जवाबदेह बनाएं।',
+        heroBtnReport: 'समस्या दर्ज करें',
+        heroBtnExplore: 'सेवा विश्वसनीयता देखें'
+      },
+      te: {
+        navTagline: 'హామీ వర్సెస్ వాస్తవం',
+        home: 'హోమ్',
+        services: 'సేవలు చూడండి',
+        report: 'సమస్య నివేదించండి',
+        track: 'ఫిర్యాదు ట్రాక్ చేయండి',
+        reliability: 'విశ్వసనీయత డాష్‌బోర్డ్',
+        citizen: 'పౌర పోర్టల్',
+        admin: 'అధికారి డాష్‌బోర్డ్',
+        about: 'మా గురించి',
+        navReportCta: 'సమస్య నివేదించండి',
+        heroTitle: 'ప్రజా సేవలు హామీ ఇచ్చిన విధంగా పనిచేస్తున్నాయా?',
+        heroSubtitle: 'మీ ప్రాంతానికి నమ్మకమైన ప్రజా సేవలు అవసరం. సమస్యలను నివేదించండి, ఫిర్యాదులను ట్రాక్ చేయండి మరియు అధికారులను జవాబుదారీగా ఉంచండి.',
+        heroBtnReport: 'సమస్య నివేదించండి',
+        heroBtnExplore: 'సేవా విశ్వసనీయత చూడండి'
+      }
+    };
+
+    function getInitialState() {
+      return {
+        lang: 'en',
+        role: 'citizen',
+        userName: 'Ananya Rao',
+        userLocality: 'Gachibowli',
+        selectedServiceFilter: 'All',
+        selectedComplaintId: 'LM-2026-1042',
+        complaints: [
+          {
+            id: 'LM-2026-1042',
+            category: 'Drinking Water',
+            title: 'Irregular morning water supply in Kukatpally Phase 2',
+            description: 'Water supply arrived only 4 days this week instead of daily morning supply, leaving upper-floor homes without stored water.',
+            city: 'Hyderabad',
+            locality: 'Kukatpally',
+            exactLocation: 'Near Phase 2 Community Tank',
+            lat: '17.4849',
+            lng: '78.4138',
+            occurredAt: '2026-11-20T06:30',
+            createdAt: '2026-11-20 08:15',
+            status: 'Resolution Reported',
+            priority: 'High',
+            department: 'Water Supply & Sewerage Board',
+            authorityNotes: 'Valve alignment on main feeder completed on Nov 22. Pressure test scheduled.',
+            resolutionEvidence: 'Valve maintenance log #WS-884 uploaded by field engineer.',
+            verificationChoice: null,
+            verificationNote: '',
+            evidenceDataUrl: '',
+            timeline: [
+              { stage: 'Submitted', note: 'Complaint logged by citizen with locality pin.', time: '2026-11-20 08:15', done: true },
+              { stage: 'Under Review', note: 'Assigned to Water Supply & Sewerage Board.', time: '2026-11-20 14:10', done: true },
+              { stage: 'In Progress', note: 'Field crew inspected feeder valve.', time: '2026-11-21 10:30', done: true },
+              { stage: 'Resolution Reported', note: 'Authority marked fix complete—awaiting citizen verification.', time: '2026-11-22 17:00', done: true }
+            ]
+          },
+          {
+            id: 'LM-2026-1039',
+            category: 'Streetlights',
+            title: 'Four non-working streetlights along Gachibowli Park Road',
+            description: 'Four poles near the jogging track have remained unlit after evening hours, creating safety concerns for walkers.',
+            city: 'Hyderabad',
+            locality: 'Gachibowli',
+            exactLocation: 'Jogging Track Gate 1 to 4',
+            lat: '17.4401',
+            lng: '78.3489',
+            occurredAt: '2026-11-16T19:00',
+            createdAt: '2026-11-17 09:05',
+            status: 'Verified Resolved',
+            priority: 'Medium',
+            department: 'Municipal Electrical Wing',
+            authorityNotes: 'Replaced LED fixtures and checked junction box fuse.',
+            resolutionEvidence: 'Replaced 4x 90W LED luminaires.',
+            verificationChoice: 'yes',
+            verificationNote: 'All four streetlights glowed brightly last night.',
+            evidenceDataUrl: '',
+            timeline: [
+              { stage: 'Submitted', note: 'Complaint submitted by resident.', time: '2026-11-17 09:05', done: true },
+              { stage: 'In Progress', note: 'Electrical team dispatched to Park Road.', time: '2026-11-18 11:20', done: true },
+              { stage: 'Resolution Reported', note: 'Authority reported LED replacement complete.', time: '2026-11-18 18:40', done: true },
+              { stage: 'Verified Resolved', note: 'Citizen confirmed lights are working properly.', time: '2026-11-19 08:20', done: true }
+            ]
+          },
+          {
+            id: 'LM-2026-1035',
+            category: 'Sanitation',
+            title: 'Overflowing storm drain near LB Nagar Ward 9 market',
+            description: 'Drainage channel near the vegetable market was previously marked resolved, but wastewater is pooling again.',
+            city: 'Hyderabad',
+            locality: 'LB Nagar',
+            exactLocation: 'Ward 9 Market Main Lane',
+            lat: '17.3457',
+            lng: '78.5522',
+            occurredAt: '2026-11-14T07:45',
+            createdAt: '2026-11-14 09:30',
+            status: 'Reopened',
+            priority: 'High',
+            department: 'Sanitation & Solid Waste Dept',
+            authorityNotes: 'Desilting done once; checking upstream blockage.',
+            resolutionEvidence: 'Initial desilting completed Nov 15.',
+            verificationChoice: 'no',
+            verificationNote: 'Water pooled again within 24 hours; silt still blocks the culvert.',
+            evidenceDataUrl: '',
+            timeline: [
+              { stage: 'Submitted', note: 'Drainage overflow reported.', time: '2026-11-14 09:30', done: true },
+              { stage: 'Resolution Reported', note: 'Authority reported desilting completed.', time: '2026-11-15 16:00', done: true },
+              { stage: 'Reopened', note: 'Citizen rejected resolution: issue still exists.', time: '2026-11-16 10:15', done: true, reopen: true }
+            ]
+          },
+          {
+            id: 'LM-2026-1028',
+            category: 'Electricity',
+            title: 'Afternoon voltage fluctuation in Secunderabad West',
+            description: 'Voltage dips below 175V between 1 PM and 4 PM on weekdays.',
+            city: 'Hyderabad',
+            locality: 'Secunderabad',
+            exactLocation: 'West Marredpally Sub-lane',
+            lat: '17.4399',
+            lng: '78.4983',
+            occurredAt: '2026-11-19T13:30',
+            createdAt: '2026-11-19 15:00',
+            status: 'Under Review',
+            priority: 'Medium',
+            department: 'Power Distribution Utility',
+            authorityNotes: 'Load balancing audit queued for distribution transformer.',
+            resolutionEvidence: '',
+            verificationChoice: null,
+            verificationNote: '',
+            evidenceDataUrl: '',
+            timeline: [
+              { stage: 'Submitted', note: 'Voltage drop reported by citizen.', time: '2026-11-19 15:00', done: true },
+              { stage: 'Under Review', note: 'Logged with Power Distribution Utility.', time: '2026-11-20 09:45', done: true }
+            ]
+          }
+        ],
+        notifications: [
+          { id: 'n1', text: 'Resolution reported for LM-2026-1042 (Drinking Water). Please verify whether water supply is restored.', time: 'Today', unread: true },
+          { id: 'n2', text: 'Complaint LM-2026-1035 was Reopened after citizen verification and routed to Sanitation Dept.', time: '2d ago', unread: true },
+          { id: 'n3', text: 'Service Alert: Scheduled pipeline maintenance in Kukatpally on Sunday 6 AM–9 AM (Demo).', time: '3d ago', unread: false }
+        ]
+      };
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          const init = getInitialState();
+          saveState(init);
+          return init;
+        }
+        return JSON.parse(raw);
+      } catch (e) {
+        return getInitialState();
+      }
+    }
+
+    function saveState(nextState) {
+      state = nextState;
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        // Ignore storage quota issues in restricted modes
+      }
+    }
+
+    let state = loadState();
+    let charts = {};
+    let pendingEvidenceDataUrl = '';
+
+    function showToast(msg) {
+      const box = document.getElementById('toastBox');
+      box.textContent = msg;
+      box.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => box.classList.remove('show'), 3200);
+    }
+
+    function navigateTo(pageId) {
+      document.querySelectorAll('.page-view').forEach(sec => sec.classList.remove('active'));
+      const target = document.getElementById('page-' + pageId);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.page === pageId);
+      });
+
+      document.getElementById('navLinks').classList.remove('open');
+      document.getElementById('notifPanel').classList.remove('open');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (pageId === 'home') renderHome();
+      if (pageId === 'services') renderExploreServices();
+      if (pageId === 'report') initReportDefaults();
+      if (pageId === 'track') renderTrackPage();
+      if (pageId === 'reliability') renderReliabilityDashboard();
+      if (pageId === 'citizen') renderCitizenDashboard();
+      if (pageId === 'admin') renderAdminDashboard();
+      refreshIcons();
+    }
+
+    function toggleMobileMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+
+    function changeLanguage(lang) {
+      saveState({ ...state, lang });
+      applyTranslations();
+      showToast('Language updated');
+    }
+
+    function applyTranslations() {
+      const t = TRANSLATIONS[state.lang] || TRANSLATIONS.en;
+      document.getElementById('langSelect').value = state.lang;
+      const mapIds = ['navTagline','home','services','report','track','reliability','citizen','admin','about','navReportCta','heroTitle','heroSubtitle','heroBtnReport','heroBtnExplore'];
+      mapIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && t[id]) el.textContent = t[id];
+      });
+    }
+
+    function getStatusBadgeClass(status) {
+      const map = {
+        'Submitted': 'b-submitted',
+        'Under Review': 'b-review',
+        'In Progress': 'b-progress',
+        'Resolution Reported': 'b-reported',
+        'Awaiting Citizen Verification': 'b-awaiting',
+        'Verified Resolved': 'b-verified',
+        'Reopened': 'b-reopened'
+      };
+      return map[status] || 'b-submitted';
+    }
+
+    function renderBadge(status) {
+      return `<span class="badge ${getStatusBadgeClass(status)}">${escapeHtml(status)}</span>`;
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, s => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[s]));
+    }
+
+    function computeMetrics() {
+      const baseTotal = 428;
+      const baseResolved = 296;
+      const extraSubmitted = Math.max(0, state.complaints.length - 4);
+      const total = baseTotal + extraSubmitted;
+      const verifiedCount = state.complaints.filter(c => c.status === 'Verified Resolved').length;
+      const reopenedCount = state.complaints.filter(c => c.status === 'Reopened').length;
+      const resolved = baseResolved + verifiedCount;
+      const pending = Math.max(0, total - resolved);
+
+      const overallScore = Math.max(35, Math.min(95, 68 + verifiedCount * 2 - reopenedCount * 3));
+      const serviceScores = {
+        'Drinking Water': Math.max(30, Math.min(95, 57 + state.complaints.filter(c => c.category === 'Drinking Water' && c.status === 'Verified Resolved').length * 3)),
+        'Electricity': Math.max(35, Math.min(98, 83 - state.complaints.filter(c => c.category === 'Electricity' && c.status === 'Reopened').length * 4)),
+        'Streetlights': Math.max(35, Math.min(95, 67 + state.complaints.filter(c => c.category === 'Streetlights' && c.status === 'Verified Resolved').length * 4)),
+        'Sanitation': Math.max(30, Math.min(95, 57 - state.complaints.filter(c => c.category === 'Sanitation' && c.status === 'Reopened').length * 4))
+      };
+
+      return { total, resolved, pending, overallScore, serviceScores };
+    }
+
+    function renderHome() {
+      const coreServices = ['Drinking Water', 'Electricity', 'Streetlights', 'Sanitation'];
+      document.getElementById('homeServiceCards').innerHTML = coreServices.map(name => {
+        const meta = SERVICE_META[name];
+        return `
+          <div class="service-card">
+            <div>
+              <div class="service-icon-box" style="background:${meta.bg};color:${meta.color};">
+                <i data-lucide="${meta.icon}" style="width:24px;height:24px;"></i>
+              </div>
+              <h3>${escapeHtml(name)}</h3>
+              <p>${escapeHtml(meta.shortDesc)}</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="openServiceDetail('${name}')">
+              <span>Explore</span>
+              <i data-lucide="arrow-right" style="width:15px;height:15px;"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      const m = computeMetrics();
+      document.getElementById('homeStatsGrid').innerHTML = `
+        <div class="stat-card">
+          <div class="stat-label">Total Issues Reported</div>
+          <div class="stat-value">${m.total}</div>
+          <div class="stat-meta">Demo community counter</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Issues Resolved</div>
+          <div class="stat-value" style="color:var(--green-dark);">${m.resolved}</div>
+          <div class="stat-meta">Includes verified resolutions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Pending Complaints</div>
+          <div class="stat-value" style="color:var(--amber);">${m.pending}</div>
+          <div class="stat-meta">Active & awaiting verification</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Average Reliability Score</div>
+          <div class="stat-value" style="color:var(--teal-dark);">${m.overallScore}/100</div>
+          <div class="stat-meta">Promise vs Reality (Demo)</div>
+        </div>
+      `;
+
+      document.getElementById('homePromiseBars').innerHTML = coreServices.map(name => {
+        const meta = SERVICE_META[name];
+        const score = m.serviceScores[name];
+        return `
+          <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:#f8fafc;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <strong style="color:var(--navy);">${escapeHtml(name)}</strong>
+              <span class="badge b-verified">Reliability: ${score}%</span>
+            </div>
+            <div style="font-size:0.84rem;color:var(--muted);margin-top:6px;">
+              Promised: <strong>${escapeHtml(meta.promisedText)}</strong> • Actual: <strong>${escapeHtml(meta.actualText)}</strong>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:${score}%;background:linear-gradient(90deg,var(--teal),var(--green));"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openServiceDetail(serviceName) {
+      saveState({ ...state, selectedServiceFilter: serviceName });
+      navigateTo('services');
+    }
+
+    function renderExploreServices() {
+      const filters = ['All', ...Object.keys(SERVICE_META)];
+      document.getElementById('serviceFilterBar').innerHTML = filters.map(f => {
+        const active = state.selectedServiceFilter === f;
+        return `<button class="btn btn-sm ${active ? 'btn-navy' : 'btn-outline'}" onclick="setServiceFilter('${f}')">${escapeHtml(f)}</button>`;
+      }).join('');
+
+      const list = state.selectedServiceFilter === 'All'
+        ? Object.keys(SERVICE_META)
+        : [state.selectedServiceFilter];
+
+      const m = computeMetrics();
+      document.getElementById('exploreServicesList').innerHTML = list.map(name => {
+        const meta = SERVICE_META[name];
+        const score = m.serviceScores[name] ?? 72;
+        const related = state.complaints.filter(c => c.category === name);
+        return `
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="service-icon-box" style="background:${meta.bg};color:${meta.color};margin-bottom:0;">
+                  <i data-lucide="${meta.icon}" style="width:22px;height:22px;"></i>
+                </div>
+                <div>
+                  <h3>${escapeHtml(name)}</h3>
+                  <p style="font-size:0.88rem;color:var(--muted);">${escapeHtml(meta.shortDesc)}</p>
+                </div>
+              </div>
+              <span class="badge b-verified">${score}% Score</span>
+            </div>
+            <div style="margin-top:14px;padding:12px;background:#f8fafc;border-radius:10px;font-size:0.86rem;">
+              <div><strong>Promised:</strong> ${escapeHtml(meta.promisedText)} &nbsp;|&nbsp; <strong>Actual (Demo):</strong> ${escapeHtml(meta.actualText)}</div>
+              <div style="margin-top:4px;color:var(--muted);"><strong>Recurring Hotspot:</strong> ${escapeHtml(meta.hotspot)}</div>
+            </div>
+            <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+              <span style="font-size:0.82rem;color:var(--muted);">${related.length} logged ticket(s) in demo</span>
+              <button class="btn btn-primary btn-sm" onclick="prefillReportCategory('${name}')">Report ${escapeHtml(name)} Issue</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function setServiceFilter(f) {
+      saveState({ ...state, selectedServiceFilter: f });
+      renderExploreServices();
+      refreshIcons();
+    }
+
+    function prefillReportCategory(cat) {
+      navigateTo('report');
+      setTimeout(() => {
+        const sel = document.getElementById('serviceCategory');
+        if (sel) sel.value = cat;
+      }, 50);
+    }
+
+    // Report Form Logic
+    function initReportDefaults() {
+      const dt = document.getElementById('occurredAt');
+      if (dt && !dt.value) {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        dt.value = now.toISOString().slice(0, 16);
+      }
+      document.getElementById('areaLocality').value = state.userLocality || 'Gachibowli';
+      syncMapPinFromLocality();
+    }
+
+    const LOCALITY_COORDS = {
+      'Gachibowli': { lat: '17.4401', lng: '78.3489' },
+      'Kukatpally': { lat: '17.4849', lng: '78.4138' },
+      'Secunderabad': { lat: '17.4399', lng: '78.4983' },
+      'LB Nagar': { lat: '17.3457', lng: '78.5522' }
+    };
+
+    function syncMapPinFromLocality() {
+      const loc = document.getElementById('areaLocality').value;
+      const c = LOCALITY_COORDS[loc] || LOCALITY_COORDS['Gachibowli'];
+      document.getElementById('latInput').value = c.lat;
+      document.getElementById('lngInput').value = c.lng;
+      document.getElementById('pinCoordsText').textContent = `Pin: ${c.lat}° N, ${c.lng}° E (${loc})`;
+    }
+
+    function useCurrentApproxLocation() {
+      syncMapPinFromLocality();
+      showToast('Pin reset to locality center');
+    }
+
+    function pickMapPin(event) {
+      const rect = event.currentTarget.getBoundingClientRect();
+      const rx = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+      const ry = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+      const lat = (17.32 + (1 - ry) * 0.22).toFixed(4);
+      const lng = (78.32 + rx * 0.28).toFixed(4);
+      const loc = document.getElementById('areaLocality').value;
+      document.getElementById('latInput').value = lat;
+      document.getElementById('lngInput').value = lng;
+      document.getElementById('pinCoordsText').textContent = `Custom Pin: ${lat}° N, ${lng}° E (${loc})`;
+      showToast(`Pin placed at ${lat}° N, ${lng}° E`);
+    }
+
+    function previewEvidenceFile(event) {
+      const file = event.target.files && event.target.files[0];
+      const wrap = document.getElementById('evidencePreviewWrap');
+      if (!file) {
+        pendingEvidenceDataUrl = '';
+        wrap.innerHTML = '';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        pendingEvidenceDataUrl = String(reader.result || '');
+        wrap.innerHTML = `<img src="${pendingEvidenceDataUrl}" alt="Uploaded evidence preview" class="evidence-thumb" />`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function submitComplaint(event) {
+      event.preventDefault();
+      const category = document.getElementById('serviceCategory').value.trim();
+      const title = document.getElementById('problemTitle').value.trim();
+      const description = document.getElementById('problemDesc').value.trim();
+      const city = document.getElementById('villageCity').value.trim();
+      const locality = document.getElementById('areaLocality').value.trim();
+      const exactLocation = document.getElementById('exactLocation').value.trim();
+      const occurredAt = document.getElementById('occurredAt').value;
+      const lat = document.getElementById('latInput').value;
+      const lng = document.getElementById('lngInput').value;
+
+      if (!category || !title || !description || !city || !locality || !occurredAt) {
+        showToast('Please fill in all required (*) fields.');
+        return;
+      }
+
+      const randNum = Math.floor(1050 + Math.random() * 8900);
+      const newId = `LM-2026-${randNum}`;
+      const nowStr = new Date().toISOString().replace('T', ' ').slice(0, 16);
+
+      const deptMap = {
+        'Drinking Water': 'Water Supply & Sewerage Board',
+        'Electricity': 'Power Distribution Utility',
+        'Streetlights': 'Municipal Electrical Wing',
+        'Sanitation': 'Sanitation & Solid Waste Dept',
+        'Other Public Services': 'Municipal Civic Operations'
+      };
+
+      const newTicket = {
+        id: newId,
+        category,
+        title,
+        description,
+        city,
+        locality,
+        exactLocation: exactLocation || `${locality} Main Area`,
+        lat,
+        lng,
+        occurredAt,
+        createdAt: nowStr,
+        status: 'Submitted',
+        priority: 'Medium',
+        department: deptMap[category] || 'Municipal Civic Operations',
+        authorityNotes: 'Awaiting initial authority review.',
+        resolutionEvidence: '',
+        verificationChoice: null,
+        verificationNote: '',
+        evidenceDataUrl: pendingEvidenceDataUrl,
+        timeline: [
+          { stage: 'Submitted', note: `Complaint submitted for ${locality}, ${city}.`, time: nowStr, done: true }
+        ]
+      };
+
+      const nextNotifs = [
+        { id: 'n_' + Date.now(), text: `Complaint ${newId} submitted for ${category} in ${locality}.`, time: 'Just now', unread: true },
+        ...state.notifications
+      ];
+
+      saveState({
+        ...state,
+        selectedComplaintId: newId,
+        complaints: [newTicket, ...state.complaints],
+        notifications: nextNotifs
+      });
+
+      pendingEvidenceDataUrl = '';
+      document.getElementById('complaintForm').reset();
+      document.getElementById('evidencePreviewWrap').innerHTML = '';
+      initReportDefaults();
+
+      document.getElementById('reportSuccessBox').innerHTML = `
+        <div class="alert-box alert-success">
+          <div style="font-weight:700;font-size:1rem;">Your complaint has been submitted successfully. You can use your reference ID to track its progress.</div>
+          <div style="margin-top:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <span>Reference ID: <strong style="font-size:1.05rem;">${escapeHtml(newId)}</strong></span>
+            <button type="button" class="btn btn-success btn-sm" onclick="trackSpecificId('${newId}')">Track ${escapeHtml(newId)} Now</button>
+          </div>
+        </div>
+      `;
+
+      renderNotifications();
+      showToast(`Submitted with Reference ID ${newId}`);
+    }
+
+    function trackSpecificId(id) {
+      saveState({ ...state, selectedComplaintId: id });
+      document.getElementById('trackSearchInput').value = id;
+      navigateTo('track');
+    }
+
+    function handleTrackSearch(event) {
+      event.preventDefault();
+      const q = document.getElementById('trackSearchInput').value.trim().toUpperCase();
+      if (!q) {
+        renderTrackPage();
+        return;
+      }
+      const match = state.complaints.find(c => c.id.toUpperCase() === q) || state.complaints.find(c => c.id.toUpperCase().includes(q));
+      if (!match) {
+        document.getElementById('trackResultDetail').innerHTML = `
+          <div class="alert-box alert-warn">No complaint matched Reference ID "<strong>${escapeHtml(q)}</strong>". Try one of the tickets listed below or submit a new issue.</div>
+        `;
+        return;
+      }
+      saveState({ ...state, selectedComplaintId: match.id });
+      renderTrackPage();
+    }
+
+    function clearTrackSearch() {
+      document.getElementById('trackSearchInput').value = '';
+      renderTrackPage();
+    }
+
+    function renderTrackPage() {
+      const selected = state.complaints.find(c => c.id === state.selectedComplaintId) || state.complaints[0];
+      const detailEl = document.getElementById('trackResultDetail');
+
+      if (selected) {
+        const canVerify = selected.status === 'Resolution Reported' || selected.status === 'Awaiting Citizen Verification';
+        detailEl.innerHTML = `
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+              <div>
+                <div style="font-size:0.82rem;font-weight:700;color:var(--teal-dark);">REFERENCE ID: ${escapeHtml(selected.id)}</div>
+                <h2 style="font-size:1.35rem;margin-top:2px;">${escapeHtml(selected.title)}</h2>
+                <div style="font-size:0.86rem;color:var(--muted);margin-top:4px;">
+                  <strong>Category:</strong> ${escapeHtml(selected.category)} • <strong>Location:</strong> ${escapeHtml(selected.exactLocation)}, ${escapeHtml(selected.locality)}, ${escapeHtml(selected.city)} • <strong>Submitted:</strong> ${escapeHtml(selected.createdAt)}
+                </div>
+              </div>
+              ${renderBadge(selected.status)}
+            </div>
+
+            <p style="margin-top:14px;font-size:0.94rem;">${escapeHtml(selected.description)}</p>
+            ${selected.evidenceDataUrl ? `<img src="${selected.evidenceDataUrl}" alt="Complaint evidence" class="evidence-thumb" style="max-width:340px;" />` : ''}
+
+            <div class="grid-2" style="margin-top:18px;">
+              <div style="padding:14px;background:#f8fafc;border-radius:12px;border:1px solid var(--border);">
+                <h4 style="margin-bottom:6px;">Authority Response & Resolution Update</h4>
+                <div style="font-size:0.86rem;"><strong>Assigned Department:</strong> ${escapeHtml(selected.department)}</div>
+                <div style="font-size:0.86rem;margin-top:4px;"><strong>Investigation / Action Notes:</strong> ${escapeHtml(selected.authorityNotes || 'Pending update')}</div>
+                <div style="font-size:0.86rem;margin-top:4px;"><strong>Reported Resolution Evidence:</strong> ${escapeHtml(selected.resolutionEvidence || 'None reported yet')}</div>
+              </div>
+
+              <div style="padding:14px;background:#f8fafc;border-radius:12px;border:1px solid var(--border);">
+                <h4 style="margin-bottom:6px;">Complaint Progress Timeline</h4>
+                <div class="timeline">
+                  ${(selected.timeline || []).map(ev => `
+                    <div class="tl-item ${ev.reopen ? 'reopen' : (ev.done ? 'done' : '')}">
+                      <div class="tl-dot"></div>
+                      <div style="font-size:0.88rem;font-weight:700;color:var(--navy);">${escapeHtml(ev.stage)} <span style="font-weight:400;color:var(--muted);font-size:0.78rem;">• ${escapeHtml(ev.time)}</span></div>
+                      <div style="font-size:0.84rem;color:var(--muted);">${escapeHtml(ev.note)}</div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+
+            <!-- Resolution Verification Panel -->
+            <div style="margin-top:20px;padding:16px;border-radius:12px;border:1.5px solid ${canVerify ? 'var(--amber)' : 'var(--border)'};background:${canVerify ? '#fffbeb' : '#f8fafc'};">
+              <h4 style="margin-bottom:6px;">Independent Citizen Resolution Verification</h4>
+              <p style="font-size:0.86rem;color:var(--muted);margin-bottom:12px;">
+                Authorities cannot mark a complaint as citizen-verified on their own. Confirm whether the issue is genuinely fixed in your locality.
+              </p>
+              ${canVerify ? `
+                <div class="form-group" style="margin-bottom:10px;">
+                  <label for="verifyNoteInput">Verification Note or Additional Evidence Details (Optional)</label>
+                  <input type="text" id="verifyNoteInput" class="form-control" placeholder="e.g., Water pressure is back to normal or problem still persists..." />
+                </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                  <button type="button" class="btn btn-success" onclick="verifyResolution('${selected.id}', true)">
+                    <i data-lucide="check-circle" style="width:17px;height:17px;"></i>
+                    <span>Yes, the issue is resolved.</span>
+                  </button>
+                  <button type="button" class="btn btn-danger" onclick="verifyResolution('${selected.id}', false)">
+                    <i data-lucide="rotate-ccw" style="width:17px;height:17px;"></i>
+                    <span>No, the issue still exists.</span>
+                  </button>
+                </div>
+              ` : `
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+                  <span style="font-size:0.88rem;color:var(--navy);">
+                    ${selected.verificationChoice === 'yes' ? 'Verified as resolved by citizen.' : selected.verificationChoice === 'no' ? 'Marked as still unresolved and reopened.' : 'Resolution verification becomes active once authorities report a resolution.'}
+                  </span>
+                  ${selected.status !== 'Reopened' && selected.status !== 'Verified Resolved' ? `
+                    <button type="button" class="btn btn-outline btn-sm" onclick="reopenComplaintDirectly('${selected.id}')">Reopen Unresolved Issue</button>
+                  ` : ''}
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      }
+
+      document.getElementById('trackComplaintsList').innerHTML = state.complaints.map(c => `
+        <div class="card" style="cursor:pointer;${c.id === selected?.id ? 'border-color:var(--teal);' : ''}" onclick="trackSpecificId('${c.id}')">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;">
+            <strong style="color:var(--navy);font-size:0.9rem;">${escapeHtml(c.id)} • ${escapeHtml(c.category)}</strong>
+            ${renderBadge(c.status)}
+          </div>
+          <div style="font-weight:700;color:var(--text);font-size:0.98rem;">${escapeHtml(c.title)}</div>
+          <div style="font-size:0.82rem;color:var(--muted);margin-top:4px;">${escapeHtml(c.locality)}, ${escapeHtml(c.city)} • ${escapeHtml(c.createdAt)}</div>
+        </div>
+      `).join('');
+
+      refreshIcons();
+    }
+
+    function verifyResolution(id, isResolved) {
+      const noteEl = document.getElementById('verifyNoteInput');
+      const note = noteEl ? noteEl.value.trim() : '';
+      const nowStr = new Date().toISOString().replace('T', ' ').slice(0, 16);
+
+      const updated = state.complaints.map(c => {
+        if (c.id !== id) return c;
+        const nextStatus = isResolved ? 'Verified Resolved' : 'Reopened';
+        const tlEntry = isResolved
+          ? { stage: 'Verified Resolved', note: note || 'Citizen confirmed the issue has been resolved.', time: nowStr, done: true }
+          : { stage: 'Reopened', note: note || 'Citizen reported the issue still exists; authority notified.', time: nowStr, done: true, reopen: true };
+        return {
+          ...c,
+          status: nextStatus,
+          verificationChoice: isResolved ? 'yes' : 'no',
+          verificationNote: note,
+          timeline: [...(c.timeline || []), tlEntry]
+        };
+      });
+
+      const notifMsg = isResolved
+        ? `Citizen verified resolution for ${id}.`
+        : `Alert: Complaint ${id} was REOPENED by citizen because the issue still exists.`;
+
+      saveState({
+        ...state,
+        complaints: updated,
+        notifications: [{ id: 'n_' + Date.now(), text: notifMsg, time: 'Just now', unread: true }, ...state.notifications]
+      });
+
+      renderNotifications();
+      renderTrackPage();
+      showToast(isResolved ? `Marked ${id} as Verified Resolved` : `Reopened ${id} and notified authorities`);
+    }
+
+    function reopenComplaintDirectly(id) {
+      const nowStr = new Date().toISOString().replace('T', ' ').slice(0, 16);
+      const updated = state.complaints.map(c => {
+        if (c.id !== id) return c;
+        return {
+          ...c,
+          status: 'Reopened',
+          verificationChoice: 'no',
+          timeline: [...(c.timeline || []), { stage: 'Reopened', note: 'Citizen reopened complaint as issue remains unresolved.', time: nowStr, done: true, reopen: true }]
+        };
+      });
+      saveState({
+        ...state,
+        complaints: updated,
+        notifications: [{ id: 'n_' + Date.now(), text: `Complaint ${id} reopened by citizen.`, time: 'Just now', unread: true }, ...state.notifications]
+      });
+      renderNotifications();
+      renderTrackPage();
+      showToast(`Complaint ${id} reopened`);
+    }
+
+    // Reliability Dashboard
+    function renderReliabilityDashboard() {
+      const m = computeMetrics();
+      const score = m.overallScore;
+      document.getElementById('overallScoreNum').textContent = String(score);
+      document.getElementById('overallGaugeRing').style.background =
+        `conic-gradient(var(--teal) ${score * 3.6}deg, #e2e8f0 0deg)`;
+      document.getElementById('overallScoreLabel').textContent =
+        score >= 75 ? 'Strong Reliability' : score >= 60 ? 'Moderate Reliability — Needs Attention' : 'Low Reliability — High Service Gap';
+
+      const core = ['Drinking Water', 'Electricity', 'Streetlights', 'Sanitation'];
+      document.getElementById('serviceReliabilityBars').innerHTML = core.map(name => {
+        const s = m.serviceScores[name];
+        const meta = SERVICE_META[name];
+        return `
+          <div style="margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;font-size:0.9rem;font-weight:600;">
+              <span>${escapeHtml(name)} <span style="color:var(--muted);font-weight:400;">(${escapeHtml(meta.actualText)} vs ${escapeHtml(meta.promisedText)})</span></span>
+              <span style="color:var(--navy);font-weight:700;">${s}/100</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:${s}%;background:${s >= 70 ? 'var(--green-dark)' : s >= 60 ? 'var(--teal)' : 'var(--amber)'};"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('promiseTableBody').innerHTML = core.map(name => {
+        const meta = SERVICE_META[name];
+        const s = m.serviceScores[name];
+        return `
+          <tr>
+            <td><strong>${escapeHtml(name)}</strong> <span class="demo-pill" style="color:var(--navy);background:#e2e8f0;border:none;margin-left:4px;">Demo</span></td>
+            <td>${escapeHtml(meta.promisedText)}</td>
+            <td>${escapeHtml(meta.actualText)}</td>
+            <td><strong>${s}/100</strong></td>
+            <td>${escapeHtml(meta.hotspot)}</td>
+          </tr>
+        `;
+      }).join('');
+
+      updateLocationExplorer();
+      renderReliabilityCharts(m);
+    }
+
+    function updateLocationExplorer() {
+      const locFilter = document.getElementById('locArea').value;
+      const items = locFilter === 'All' ? LOCALITY_DATA : LOCALITY_DATA.filter(x => x.locality === locFilter);
+      document.getElementById('locationCardsGrid').innerHTML = items.map(item => `
+        <div style="padding:16px;border:1px solid var(--border);border-radius:12px;background:#f8fafc;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+            <h4 style="font-size:1.05rem;">${escapeHtml(item.locality)}, ${escapeHtml(item.city)}</h4>
+            <span class="badge ${item.score >= 70 ? 'b-verified' : 'b-reported'}">Reliability: ${item.score}/100</span>
+          </div>
+          <div style="font-size:0.8rem;color:var(--muted);margin-top:2px;">${escapeHtml(item.district)}, ${escapeHtml(item.state)} (Demo Data)</div>
+          <div class="grid-2" style="gap:8px;margin:12px 0;font-size:0.83rem;">
+            <div>Water: <strong>${item.water}%</strong></div>
+            <div>Electricity: <strong>${item.power}%</strong></div>
+            <div>Streetlights: <strong>${item.lights}%</strong></div>
+            <div>Sanitation: <strong>${item.sanitation}%</strong></div>
+          </div>
+          <div style="font-size:0.84rem;color:var(--muted);"><strong>Recurring Failure Note:</strong> ${escapeHtml(item.recurring)}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderReliabilityCharts(m) {
+      if (typeof Chart === 'undefined') return;
+      const core = ['Drinking Water', 'Electricity', 'Streetlights', 'Sanitation'];
+
+      if (charts.promise) charts.promise.destroy();
+      const ctx1 = document.getElementById('promiseRealityChart').getContext('2d');
+      charts.promise = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: core,
+          datasets: [
+            { label: 'Promised Benchmark (%)', data: [100, 100, 100, 100], backgroundColor: '#0f294a', borderRadius: 6 },
+            { label: 'Actual Delivery Score (Demo)', data: core.map(k => m.serviceScores[k]), backgroundColor: '#0d9488', borderRadius: 6 }
+          ]
+        },
+        options: { responsive: true, scales: { y: { beginAtZero: true, max: 100 } } }
+      });
+
+      if (charts.recurring) charts.recurring.destroy();
+      const ctx2 = document.getElementById('recurringFailuresChart').getContext('2d');
+      const counts = core.map(k => state.complaints.filter(c => c.category === k).length + 4);
+      charts.recurring = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: core,
+          datasets: [
+            { label: 'Recurring Issue Index (Demo)', data: counts, backgroundColor: ['#0284c7', '#d97706', '#0d9488', '#059669'], borderRadius: 6 }
+          ]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+      });
+    }
+
+    // Citizen Dashboard
+    function renderCitizenDashboard() {
+      document.getElementById('citizenWelcomeTitle').textContent = `Welcome, ${state.userName}`;
+      document.getElementById('citizenLocSubtitle').textContent = `Selected Locality: ${state.userLocality}, Hyderabad, Telangana`;
+      document.getElementById('citizenLocalitySelect').value = state.userLocality;
+
+      const locInfo = LOCALITY_DATA.find(l => l.locality === state.userLocality) || LOCALITY_DATA[0];
+      const total = state.complaints.length;
+      const resolved = state.complaints.filter(c => c.status === 'Verified Resolved').length;
+      const pending = state.complaints.filter(c => c.status !== 'Verified Resolved').length;
+
+      document.getElementById('citizenKpiGrid').innerHTML = `
+        <div class="stat-card">
+          <div class="stat-label">Total Complaints Submitted</div>
+          <div class="stat-value">${total}</div>
+          <div class="stat-meta">In current demo session</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Verified Resolved</div>
+          <div class="stat-value" style="color:var(--green-dark);">${resolved}</div>
+          <div class="stat-meta">Confirmed by citizen</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Pending / Open</div>
+          <div class="stat-value" style="color:var(--amber);">${pending}</div>
+          <div class="stat-meta">Includes reopened & awaiting check</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Locality Reliability Score</div>
+          <div class="stat-value" style="color:var(--teal-dark);">${locInfo.score}/100</div>
+          <div class="stat-meta">${escapeHtml(locInfo.locality)} (Demo)</div>
+        </div>
+      `;
+
+      document.getElementById('citizenComplaintsList').innerHTML = state.complaints.map(c => `
+        <div style="padding:14px;border:1px solid var(--border);border-radius:12px;margin-bottom:12px;background:#f8fafc;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+            <strong>${escapeHtml(c.id)} • ${escapeHtml(c.category)}</strong>
+            ${renderBadge(c.status)}
+          </div>
+          <div style="font-weight:600;margin-top:6px;">${escapeHtml(c.title)}</div>
+          <div style="font-size:0.82rem;color:var(--muted);margin-top:4px;">${escapeHtml(c.locality)} • Logged ${escapeHtml(c.createdAt)}</div>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-outline btn-sm" onclick="trackSpecificId('${c.id}')">Track & Verify</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('citizenAlertsList').innerHTML = state.notifications.map(n => `
+        <div style="padding:12px;border:1px solid var(--border);border-radius:10px;background:${n.unread ? '#f0fdfa' : '#fff'};font-size:0.86rem;">
+          <div>${escapeHtml(n.text)}</div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">${escapeHtml(n.time)}</div>
+        </div>
+      `).join('');
+    }
+
+    function updateCitizenLocality(loc) {
+      saveState({ ...state, userLocality: loc, userLocalityLabel: loc });
+      renderCitizenDashboard();
+      showToast(`Locality set to ${loc}`);
+    }
+
+    // Authority / Admin Dashboard
+    function renderAdminDashboard() {
+      const notice = document.getElementById('adminRoleNotice');
+      if (state.role !== 'admin') {
+        notice.innerHTML = `<strong>Viewing in Read-Only / Citizen Mode:</strong> Switch to <strong>Government Authority / Administrator</strong> via the top-right account button to update statuses, assign departments, or log resolution evidence. Even as an administrator, resolutions can only become <em>Verified Resolved</em> after citizen confirmation.`;
+      } else {
+        notice.innerHTML = `<strong>Administrator Mode Active:</strong> You can update investigation status, assign departments, and log resolution evidence. Note: Administrators cannot directly mark a complaint as <em>Verified Resolved</em>—citizens must confirm resolution.`;
+      }
+
+      const total = state.complaints.length;
+      const pending = state.complaints.filter(c => ['Submitted', 'Under Review', 'In Progress', 'Reopened'].includes(c.status)).length;
+      const awaitingVerify = state.complaints.filter(c => ['Resolution Reported', 'Awaiting Citizen Verification'].includes(c.status)).length;
+      const verified = state.complaints.filter(c => c.status === 'Verified Resolved').length;
+      const reopened = state.complaints.filter(c => c.status === 'Reopened').length;
+
+      document.getElementById('adminKpiGrid').innerHTML = `
+        <div class="stat-card">
+          <div class="stat-label">Total Complaints</div>
+          <div class="stat-value">${total}</div>
+          <div class="stat-meta">${awaitingVerify} awaiting citizen check</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active / Pending</div>
+          <div class="stat-value" style="color:var(--amber);">${pending}</div>
+          <div class="stat-meta">Under review or in progress</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Citizen-Verified Resolved</div>
+          <div class="stat-value" style="color:var(--green-dark);">${verified}</div>
+          <div class="stat-meta">Confirmed by residents</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Reopened Complaints</div>
+          <div class="stat-value" style="color:var(--red);">${reopened}</div>
+          <div class="stat-meta">Require follow-up action</div>
+        </div>
+      `;
+
+      document.getElementById('adminHotspotsList').innerHTML = LOCALITY_DATA.map(l => `
+        <div style="padding:12px;border:1px solid var(--border);border-radius:10px;background:#f8fafc;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+          <div>
+            <strong style="color:var(--navy);">${escapeHtml(l.locality)}</strong>
+            <div style="font-size:0.82rem;color:var(--muted);">${escapeHtml(l.recurring)}</div>
+          </div>
+          <span class="badge ${l.score >= 70 ? 'b-verified' : 'b-reported'}">${l.score}/100</span>
+        </div>
+      `).join('');
+
+      const catFilter = document.getElementById('adminFilterCategory').value;
+      const stFilter = document.getElementById('adminFilterStatus').value;
+
+      const filtered = state.complaints.filter(c => {
+        if (catFilter !== 'All' && c.category !== catFilter) return false;
+        if (stFilter !== 'All' && c.status !== stFilter) return false;
+        return true;
+      });
+
+      const isAdmin = state.role === 'admin';
+      const allowedAdminStatuses = ['Submitted', 'Under Review', 'In Progress', 'Resolution Reported', 'Awaiting Citizen Verification'];
+
+      document.getElementById('adminComplaintsBody').innerHTML = filtered.map(c => `
+        <tr>
+          <td>
+            <div style="font-weight:700;color:var(--navy);">${escapeHtml(c.id)}</div>
+            <div style="font-weight:600;margin-top:2px;">${escapeHtml(c.title)}</div>
+            <div style="font-size:0.78rem;color:var(--muted);">${escapeHtml(c.category)} • ${escapeHtml(c.createdAt)}</div>
+          </td>
+          <td>
+            <div><strong>${escapeHtml(c.locality)}</strong>, ${escapeHtml(c.city)}</div>
+            <div style="font-size:0.8rem;color:var(--muted);margin-top:4px;">Priority: <strong>${escapeHtml(c.priority)}</strong></div>
+          </td>
+          <td>
+            <div style="margin-bottom:6px;">${renderBadge(c.status)}</div>
+            <div style="font-size:0.8rem;color:var(--muted);">Dept: ${escapeHtml(c.department)}</div>
+          </td>
+          <td style="min-width:210px;">
+            <div style="font-size:0.82rem;"><strong>Notes:</strong> ${escapeHtml(c.authorityNotes || '-')}</div>
+            <div style="font-size:0.82rem;margin-top:4px;"><strong>Evidence:</strong> ${escapeHtml(c.resolutionEvidence || '-')}</div>
+          </td>
+          <td style="min-width:190px;">
+            ${isAdmin ? `
+              <select class="form-control" style="padding:6px 8px;font-size:0.82rem;margin-bottom:6px;" onchange="adminUpdateComplaint('${c.id}', this.value)">
+                <option value="">-- Update Status --</option>
+                ${allowedAdminStatuses.map(st => `<option value="${st}" ${c.status === st ? 'selected' : ''}>${st}</option>`).join('')}
+              </select>
+              <input type="text" class="form-control" style="padding:6px 8px;font-size:0.8rem;" id="adminNote_${c.id}" placeholder="Add note / resolution proof..." value="${escapeHtml(c.authorityNotes || '')}" onchange="adminSaveNote('${c.id}', this.value)" />
+            ` : `
+              <button class="btn btn-outline btn-sm" onclick="trackSpecificId('${c.id}')">Inspect Ticket</button>
+            `}
+          </td>
+        </tr>
+      `).join('');
+
+      if (typeof Chart !== 'undefined') {
+        if (charts.adminStatus) charts.adminStatus.destroy();
+        const statuses = ['Submitted', 'Under Review', 'In Progress', 'Resolution Reported', 'Verified Resolved', 'Reopened'];
+        const counts = statuses.map(s => state.complaints.filter(c => c.status === s).length);
+        const ctx = document.getElementById('adminStatusChart').getContext('2d');
+        charts.adminStatus = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: statuses,
+            datasets: [{
+              data: counts,
+              backgroundColor: ['#2563eb', '#7c3aed', '#0284c7', '#d97706', '#059669', '#dc2626']
+            }]
+          },
+          options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        });
+      }
+    }
+
+    function adminUpdateComplaint(id, newStatus) {
+      if (!newStatus) return;
+      if (newStatus === 'Verified Resolved') {
+        showToast('Administrators cannot set Verified Resolved directly; citizens must verify.');
+        return;
+      }
+      const nowStr = new Date().toISOString().replace('T', ' ').slice(0, 16);
+      const updated = state.complaints.map(c => {
+        if (c.id !== id) return c;
+        return {
+          ...c,
+          status: newStatus,
+          timeline: [...(c.timeline || []), { stage: newStatus, note: `Status updated by administrator to ${newStatus}.`, time: nowStr, done: true }]
+        };
+      });
+      const extraNotif = newStatus === 'Resolution Reported'
+        ? [{ id: 'n_' + Date.now(), text: `Resolution reported for ${id}. Please verify in Track Complaint.`, time: 'Just now', unread: true }]
+        : [];
+      saveState({ ...state, complaints: updated, notifications: [...extraNotif, ...state.notifications] });
+      renderNotifications();
+      renderAdminDashboard();
+      showToast(`Updated ${id} to ${newStatus}`);
+    }
+
+    function adminSaveNote(id, val) {
+      const updated = state.complaints.map(c => c.id === id ? { ...c, authorityNotes: val, resolutionEvidence: val } : c);
+      saveState({ ...state, complaints: updated });
+      showToast(`Saved note for ${id}`);
+    }
+
+    function resetDemoData() {
+      const fresh = getInitialState();
+      fresh.lang = state.lang;
+      fresh.role = state.role;
+      saveState(fresh);
+      renderAll();
+      showToast('Demo data reset to initial sample state');
+    }
+
+    // Notifications & Role Modal
+    function toggleNotifications() {
+      document.getElementById('notifPanel').classList.toggle('open');
+    }
+
+    function markAllNotificationsRead() {
+      saveState({
+        ...state,
+        notifications: state.notifications.map(n => ({ ...n, unread: false }))
+      });
+      renderNotifications();
+    }
+
+    function renderNotifications() {
+      const unreadCount = state.notifications.filter(n => n.unread).length;
+      const badge = document.getElementById('notifCount');
+      badge.textContent = String(unreadCount);
+      badge.style.display = unreadCount > 0 ? 'flex' : 'none';
+
+      document.getElementById('notifList').innerHTML = state.notifications.length
+        ? state.notifications.map(n => `
+          <div class="notif-item ${n.unread ? 'unread' : ''}">
+            <div>${escapeHtml(n.text)}</div>
+            <div style="font-size:0.74rem;color:var(--muted);margin-top:4px;">${escapeHtml(n.time)}</div>
+          </div>
+        `).join('')
+        : '<div class="notif-item">No notifications yet.</div>';
+    }
+
+    function openAuthModal() {
+      document.getElementById('modalRoleSelect').value = state.role;
+      document.getElementById('modalUserName').value = state.userName;
+      document.getElementById('modalUserLoc').value = `${state.userLocality}, Hyderabad, Telangana`;
+      document.getElementById('authModal').classList.add('open');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.remove('open');
+    }
+
+    function saveRoleSession() {
+      const role = document.getElementById('modalRoleSelect').value;
+      const userName = document.getElementById('modalUserName').value.trim() || 'Citizen User';
+      const locRaw = document.getElementById('modalUserLoc').value.trim();
+      const matchedLoc = LOCALITY_DATA.find(l => locRaw.toLowerCase().includes(l.locality.toLowerCase()));
+      saveState({
+        ...state,
+        role,
+        userName,
+        userLocality: matchedLoc ? matchedLoc.locality : state.userLocality
+      });
+      document.getElementById('authRoleLabel').textContent = role === 'admin' ? 'Admin' : 'Citizen';
+      closeAuthModal();
+      renderAll();
+      if (role === 'admin') navigateTo('admin');
+      else navigateTo('citizen');
+      showToast(`Switched to ${role === 'admin' ? 'Authority Admin' : 'Citizen'} mode`);
+    }
+
+    function refreshIcons() {
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+    }
+
+    function renderAll() {
+      document.getElementById('authRoleLabel').textContent = state.role === 'admin' ? 'Admin' : 'Citizen';
+      applyTranslations();
+      renderNotifications();
+      renderHome();
+      renderExploreServices();
+      renderTrackPage();
+      renderCitizenDashboard();
+      renderAdminDashboard();
+      refreshIcons();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initReportDefaults();
+      renderAll();
+    });
+  </script>
+</body>
+</html>
